@@ -1,2 +1,7 @@
 # lscore
-low bee  core
+low bee scan core
+
+本来是本渣渣为了渣渣扫写的扫描核心，不知道为什么就写成了自己的常用库，经常用一些里面的功能
+
+`example`里面有一些样例，但是不是全部的
+
