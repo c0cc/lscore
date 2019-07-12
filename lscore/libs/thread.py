@@ -92,3 +92,28 @@ def multi_threading(limit, daemon=True, callback=None):
 
     return center
 
+
+def single(func):
+    '''
+    单线程运行,当多线程逐渐被使用起来以后，就会牵扯到标准输出
+
+    就比如说我们写一个爆破服务器账号密码的脚本，需要分别去在成功和失败的位置写上，先获取锁，然后写数据，然后解锁
+    遵循懒即美德
+    增加单线程运行模式装饰器
+    单线程函数定位为最终位置，无接盘函数，运行值直接返回
+
+    :param func: 被装饰的函数
+    :return: 无返回值
+    '''
+    func_hash = hash(func)
+    globals()["__%s__single_lock__" % func_hash] = threading.Lock()
+
+    def _(*args, **kwargs):
+        lock = globals()["__%s__single_lock__" % func_hash]
+        try:
+            lock.acquire()
+            return func(*args, **kwargs)
+        finally:
+            lock.release()
+
+    return _
